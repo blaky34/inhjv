@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">xxxx</a> &gt; <a href="index.source.html" class="el_package">ru.netology.repository</a> &gt; <span class="el_source">ProductRepository.java</span></div><h1>ProductRepository.java</h1><pre class="source lang-java linenums">package ru.netology.repository;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.netology.data.Product;
+import ru.netology.exception.AlreadyExistsException;
+import ru.netology.exception.NotFoundException;
+
+<span class="fc" id="L10">@NoArgsConstructor</span>
+<span class="nc" id="L11">@AllArgsConstructor</span>
+<span class="nc bnc" id="L12" title="All 8 branches missed.">@Data</span>
+public class ProductRepository {
+<span class="pc" id="L14">    private Product[] products = new Product[0];</span>
+
+    //добавление продукта в конец массива
+    public void addProduct(Product addProduct) {
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (findById(addProduct.getId()) != null) {</span>
+<span class="fc" id="L19">            throw new AlreadyExistsException(&quot;Товар с ID: &quot; + addProduct.getId() + &quot; уже добавлен в репозиторий!!!&quot;);</span>
+        }
+<span class="fc" id="L21">        Product[] tmp = new Product[products.length + 1];</span>
+<span class="fc" id="L22">        System.arraycopy(products, 0, tmp, 0, products.length);</span>
+<span class="fc" id="L23">        tmp[products.length] = addProduct;</span>
+<span class="fc" id="L24">        products = tmp;</span>
+<span class="fc" id="L25">    }</span>
+
+    //получить все сохранненные продукты в порядке добавления
+    public Product[] findAll() {
+<span class="fc" id="L29">        return getProducts();</span>
+    }
+
+    //удалить по id
+    public void removeId(int id) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (findById(id) == null) {</span>
+<span class="fc" id="L35">            throw new NotFoundException(&quot;Товар с ID: &quot; + id + &quot; не найден!!!&quot;);</span>
+        }
+<span class="fc" id="L37">        Product[] tmp = new Product[products.length - 1];</span>
+<span class="fc" id="L38">        int i = 0;</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (Product product : products) {</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (product.getId() != id) {</span>
+<span class="fc" id="L41">                tmp[i] = product;</span>
+<span class="fc" id="L42">                i++;</span>
+            }
+        }
+<span class="fc" id="L45">        products = tmp;</span>
+<span class="fc" id="L46">    }</span>
+
+    //поиска товара в репозитории по его id
+    public Product findById(int id) {
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (Product product : products) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (product.getId() == id) {</span>
+<span class="fc" id="L52">                return product;</span>
+            }
+        }
+<span class="fc" id="L55">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
